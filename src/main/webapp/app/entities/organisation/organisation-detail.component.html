@@ -1,0 +1,44 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="organisation">
+            <h2><span jhiTranslate="sandboxApp.organisation.detail.title">Organisation</span> {{ organisation.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="sandboxApp.organisation.appellation">Appellation</span></dt>
+                <dd>
+                    <span>{{ organisation.appellation }}</span>
+                </dd>
+                <dt><span jhiTranslate="sandboxApp.organisation.description">Description</span></dt>
+                <dd>
+                    <span>{{ organisation.description }}</span>
+                </dd>
+                <dt><span jhiTranslate="sandboxApp.organisation.dateCreation">Date Creation</span></dt>
+                <dd>
+                    <span>{{ organisation.dateCreation }}</span>
+                </dd>
+                <dt><span jhiTranslate="sandboxApp.organisation.personne">Personne</span></dt>
+                <dd>
+                    <span *ngFor="let personne of organisation.personnes; let last = last">
+                        <a [routerLink]="['/personne', personne?.id, 'view']">{{ personne.nom }}</a>{{ last ? '' : ', ' }}
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/organisation', organisation.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

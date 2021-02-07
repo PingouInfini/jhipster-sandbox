@@ -1,0 +1,41 @@
+{
+  "name": "Organisation",
+  "fields": [
+    {
+      "fieldName": "appellation",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateCreation",
+      "fieldType": "Instant"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "personne",
+      "otherEntityRelationshipName": "organisation",
+      "relationshipName": "personne",
+      "otherEntityField": "nom",
+      "ownerSide": true
+    }
+  ],
+  "changelogDate": "20210207021957",
+  "entityTableName": "organisation",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

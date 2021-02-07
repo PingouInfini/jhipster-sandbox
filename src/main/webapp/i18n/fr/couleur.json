@@ -1,0 +1,10 @@
+{
+  "sandboxApp": {
+    "Couleur": {
+      "null": "",
+      "BLEU": "BLEU",
+      "VERT": "VERT",
+      "MARRON": "MARRON"
+    }
+  }
+}

@@ -1,0 +1,58 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-organisation-heading" jhiTranslate="sandboxApp.organisation.home.createOrEditLabel">Create or edit a Organisation</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sandboxApp.organisation.appellation" for="field_appellation">Appellation</label>
+                    <input type="text" class="form-control" name="appellation" id="field_appellation"
+                           formControlName="appellation"/>
+                    <div *ngIf="editForm.get('appellation')!.invalid && (editForm.get('appellation')!.dirty || editForm.get('appellation')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('appellation')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sandboxApp.organisation.description" for="field_description">Description</label>
+                    <input type="text" class="form-control" name="description" id="field_description"
+                           formControlName="description"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="sandboxApp.organisation.dateCreation" for="field_dateCreation">Date Creation</label>
+                    <div class="d-flex">
+                        <input id="field_dateCreation" type="datetime-local" class="form-control" name="dateCreation" formControlName="dateCreation" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label jhiTranslate="sandboxApp.organisation.personne" for="field_personnes">Personne</label>
+                    <select class="form-control" id="field_personnes" multiple name="personnes" formControlName="personnes">
+                        <option [ngValue]="getSelected(editForm.get('personnes')!.value, personneOption)" *ngFor="let personneOption of personnes; trackBy: trackById">{{ personneOption.nom }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

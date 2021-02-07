@@ -1,0 +1,46 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="personne">
+            <h2><span jhiTranslate="sandboxApp.personne.detail.title">Personne</span> {{ personne.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="sandboxApp.personne.nom">Nom</span></dt>
+                <dd>
+                    <span>{{ personne.nom }}</span>
+                </dd>
+                <dt><span jhiTranslate="sandboxApp.personne.prenom">Prenom</span></dt>
+                <dd>
+                    <span>{{ personne.prenom }}</span>
+                </dd>
+                <dt><span jhiTranslate="sandboxApp.personne.dateDeNaissance">Date De Naissance</span></dt>
+                <dd>
+                    <span>{{ personne.dateDeNaissance }}</span>
+                </dd>
+                <dt><span jhiTranslate="sandboxApp.personne.taille">Taille</span></dt>
+                <dd>
+                    <span>{{ personne.taille }}</span>
+                </dd>
+                <dt><span jhiTranslate="sandboxApp.personne.couleurYeux">Couleur Yeux</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'sandboxApp.Couleur.' + personne.couleurYeux }}">{{ personne.couleurYeux }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/personne', personne.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

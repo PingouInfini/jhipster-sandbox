@@ -48,6 +48,10 @@ public class CacheConfiguration {
             createCache(cm, com.capgemini.domain.User.class.getName());
             createCache(cm, com.capgemini.domain.Authority.class.getName());
             createCache(cm, com.capgemini.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.capgemini.domain.Personne.class.getName());
+            createCache(cm, com.capgemini.domain.Personne.class.getName() + ".organisations");
+            createCache(cm, com.capgemini.domain.Organisation.class.getName());
+            createCache(cm, com.capgemini.domain.Organisation.class.getName() + ".personnes");
             // jhipster-needle-ehcache-add-entry
         };
     }
