@@ -116,7 +116,7 @@ jhipster import-jdl jhipster-jdl.jh
 
 ## Créer une image docker
 
-### Activer la persistence pour de la BDD (en cas de redémarrage du container
+### Activer la persistence pour de la BDD (en cas de redémarrage du container)
 
 Modifier `postgresql.yml` pour activer le volume
 
@@ -136,16 +136,22 @@ server:
 
 ### Build image et push dockerhub
 
+```
 mvnw -DskipTests -Pprod verify jib:dockerBuild
 docker login --username=pingouinfinihub
 docker tag sandbox pingouinfinihub/sandbox:latest
 docker push pingouinfinihub/sandbox:latest
+```
 
 ### Lancer l'application avec Docker
 
 ```
 docker-compose -f src/main/docker/app.yml up -d
 ```
+
+### Vérifier que l'application fonctionne
+
+[http://localhost:8087/](http://localhost:8087/)
 
 ### (Si besoin) Packaging as war
 
@@ -178,19 +184,19 @@ Nécessite l'installation des prérequis
    ```
 1. Création d'un user et d'une base de données
    ```sql
-   CREATE ROLE sandbox WITH LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION PASSWORD 'sandbox'
+   CREATE ROLE sandbox WITH LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION PASSWORD 'sandbox';
    CREATE DATABASE sandbox WITH OWNER = sandbox ENCODING = 'UTF8' TABLESPACE = pg_default CONNECTION LIMIT = -1;
    ```
 1. Autres commandes utiles
    1. Vider les données d'une table
       ```sql
-      TRUNCATE TABLE `table`
+      TRUNCATE TABLE `table`;
       ```
    1. Suppression/création d'une base de données
-      ```
-      postgres=# SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = ‘sandbox’;
-      postgres=# drop database sandbox;
-      postgres=# create database sandbox;
+      ```sql
+      SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = ‘sandbox’;
+      DROP database sandbox;
+      CREATE database sandbox;
       ```
 
 ## Adapter la configuration
@@ -222,4 +228,4 @@ Lancer le script npm `start`
 
 ### Vérifier que l'application fonctionne
 
-http://localhost:8087/
+[http://localhost:8087/](http://localhost:8087/)
