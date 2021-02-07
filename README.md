@@ -21,7 +21,7 @@
    [https://www.jhipster.tech/installation/](https://www.jhipster.tech/installation/)
    Voir paragraphe : `Local installation with NPM (recommended for normal users)]`
 
-## PostgreSQL
+## [Optionnel] PostgreSQL (si tests en local)
 
 1. Téléchargement de `postgres v12`
    -> [https://www.enterprisedb.com/downloads/postgres-postgresql-downloads](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
@@ -41,6 +41,8 @@
 # Créer une nouvelle app
 
 ## Initialisation par jhipster
+
+Via une invite de commande, lancer la commande `jhipster`
 
 ```
 ? Which *type* of application would you like to create? Monolithic application (recommended for simple projects)
@@ -174,7 +176,15 @@ To package your application as a war in order to deploy it to an application ser
 # Tests en local
 
 Tests de l'application en local, via IDE Intellij.
-Nécessite l'installation des prérequis
+Nécessite l'installation des prérequis :
+
+- [Jhipster - Java - Node](#jhipster---java---node)
+- [PostgreSQL](#postgresql)
+
+et la réalisation des actions suivantes:
+
+- [Initialisation par jhipster](#initialisation-par-jhipster)
+- [Modélisation conceptuelle de données](#modélisation-conceptuelle-de-données)
 
 ## Préparation de la base de données
 
