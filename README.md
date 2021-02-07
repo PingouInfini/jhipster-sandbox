@@ -1,237 +1,175 @@
-# sandbox
+# Table des matières
 
-This application was generated using JHipster 6.10.5, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.10.5](https://www.jhipster.tech/documentation-archive/v6.10.5).
+- [Table des matières](#table-des-matières)
+- [Prérequis](#prérequis)
+  - [Jhipster - Java - Node](#jhipster---java---node)
+  - [PostgreSQL](#postgresql)
+- [Créer une nouvelle app](#créer-une-nouvelle-app)
+  - [Initialisation par jhipster](#initialisation-par-jhipster)
+  - [Modélisation conceptuelle de données](#modélisation-conceptuelle-de-données)
+  - [Créer une image docker](#créer-une-image-docker)
+- [Tests en local](#tests-en-local)
+  - [Préparation de la base de données](#préparation-de-la-base-de-données)
+  - [Adapter la configuration](#adapter-la-configuration)
+  - [Lancer l application](#lancer-l-application)
 
-## Development
+# Prérequis
 
-Before you can build this project, you must install and configure the following dependencies on your machine:
+## Jhipster - Java - Node
 
-1. [Node.js][]: We use Node to run a development web server and build the project.
-   Depending on your system, you can install Node either from source or as a pre-packaged bundle.
+1. Suivre les instructions:
+   [https://www.jhipster.tech/installation/](https://www.jhipster.tech/installation/)
+   Voir paragraphe : `Local installation with NPM (recommended for normal users)]`
 
-After installing Node, you should be able to run the following command to install development tools.
-You will only need to run this command when dependencies change in [package.json](package.json).
+## PostgreSQL
 
-```
-npm install
-```
+1. Téléchargement de `postgres v12`
+   -> [https://www.enterprisedb.com/downloads/postgres-postgresql-downloads](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
 
-We use npm scripts and [Webpack][] as our build system.
+1. Installation via `postgresql-12.5-1-windows-x64.exe`
+   -> _retenez le mot de passe postgres spécifié à l'installation (ie: postgres)_
 
-Run the following commands in two separate terminals to create a blissful development experience where your browser
-auto-refreshes when files change on your hard drive.
+1. Création/Modification de deux variables d'environnement
+   -> `PG_HOME` = `C:\Program Files\PostgreSQL\12\bin`
+   -> `PATH` -> ajouter `";%PG_HOME%\bin"`
 
-```
+1. Vérifier l'installation en vous connectant à postgres
+   ```sql
+   psql -U postgres
+   ```
 
-./mvnw
+# Créer une nouvelle app
 
-
-npm start
-```
-
-Npm is also used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
-specifying a newer version in [package.json](package.json). You can also run `npm update` and `npm install` to manage dependencies.
-Add the `help` flag on any command to see how you can use it. For example, `npm help update`.
-
-The `npm run` command will list all of the scripts available to run for this project.
-
-### PWA Support
-
-JHipster ships with PWA (Progressive Web App) support, and it's turned off by default. One of the main components of a PWA is a service worker.
-
-The service worker initialization code is commented out by default. To enable it, uncomment the following code in `src/main/webapp/index.html`:
-
-```html
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./service-worker.js').then(function () {
-      console.log('Service Worker Registered');
-    });
-  }
-</script>
-```
-
-Note: [Workbox](https://developers.google.com/web/tools/workbox/) powers JHipster's service worker. It dynamically generates the `service-worker.js` file.
-
-### Managing dependencies
-
-For example, to add [Leaflet][] library as a runtime dependency of your application, you would run following command:
+## Initialisation par jhipster
 
 ```
-npm install --save --save-exact leaflet
+? Which *type* of application would you like to create? Monolithic application (recommended for simple projects)
+? [Beta] Do you want to make it reactive with Spring WebFlux? No
+? What is the base name of your application? sandbox
+? What is your default Java package name? com.capgemini
+? Do you want to use the JHipster Registry to configure, monitor and scale your application? No
+? Which *type* of authentication would you like to use? JWT authentication (stateless, with a token)
+? Which *type* of database would you like to use? SQL (H2, MySQL, MariaDB, PostgreSQL, Oracle, MSSQL)
+? Which *production* database would you like to use? PostgreSQL
+? Which *development* database would you like to use? PostgreSQL
+? Do you want to use the Spring cache abstraction? Yes, with the Ehcache implementation (local cache, for a single node)
+
+
+? Do you want to use Hibernate 2nd level cache? Yes
+? Would you like to use Maven or Gradle for building the backend? Maven
+? Which other technologies would you like to use?
+? Which *Framework* would you like to use for the client? Angular
+? Would you like to use a Bootswatch theme (https://bootswatch.com/)? [cf https://bootswatch.com/ pour choisir]
+? Choose a Bootswatch variant navbar theme (https://bootswatch.com/)? [cf https://bootswatch.com/ pour choisir]
+? Would you like to enable internationalization support? Yes
+? Please choose the native language of the application French
+? Please choose additional languages to install
+? Besides JUnit and Jest, which testing frameworks would you like to use?
+? Would you like to install other generators from the JHipster Marketplace? No
 ```
 
-To benefit from TypeScript type definitions from [DefinitelyTyped][] repository in development, you would run following command:
+## Modélisation conceptuelle de données
+
+Via le site `https://start.jhipster.tech/jdl-studio/` générer le modèle de données.
+
+_exemple:_
 
 ```
-npm install --save-dev --save-exact @types/leaflet
+entity Personne {
+    nom String required,
+    prenom String,
+    dateDeNaissance Instant required,
+    taille Integer
+    couleurYeux Couleur
+}
+
+entity Organisation {
+    appellation String required,
+    description String,
+    dateCreation Instant
+}
+
+enum Couleur {
+    BLEU, VERT, MARRON
+}
+
+relationship ManyToMany {
+    Organisation{personne(nom)} to Personne{organisation}
+}
+
+// Set pagination options
+paginate Personne, Organisation  with pagination
+
+// Use Data Transfer Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
 ```
 
-Then you would import the JS and CSS files specified in library's installation instructions so that [Webpack][] knows about them:
-Edit [src/main/webapp/app/vendor.ts](src/main/webapp/app/vendor.ts) file:
+Enregistrer le résultat de la modélisation dans un fichier `jhipster-cin-jdl.jh` à stocker dans le répertoire du projet.
+Ouvrir un terminal et se positionner dans le répertoire projet, puis lancer la commande
 
 ```
-import 'leaflet/dist/leaflet.js';
+jhipster import-jdl jhipster-cin-jdl.jh
 ```
 
-Edit [src/main/webapp/content/scss/vendor.scss](src/main/webapp/content/scss/vendor.scss) file:
+## Créer une image docker
+
+# Tests en local
+
+Tests de l'application en local, via IDE Intellij.
+
+## Préparation de la base de données
+
+1. Connexion à postgres
+   ```sql
+   psql -U postgres
+   ```
+1. Création d'une base de données
+   ```sql
+   postgres=# create database connecteur;
+   CREATE DATABASE
+   ```
+1. Autres commandes utiles
+   1. Vider les données d'une table
+      ```sql
+      postgres=# TRUNCATE TABLE `table`
+      ```
+   1. Suppression/création d'une base de données
+      ```
+      postgres=# SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = ‘connecteur’;
+      postgres=# drop database connecteur;
+      postgres=# create database connecteur;
+      ```
+
+## Adapter la configuration
+
+Mofidier le fichier `.\src\main\resources\config\application-dev.yml` et modifier `datasource` et `port` afin d'obtenir:
 
 ```
-@import '~leaflet/dist/leaflet.css';
+datasource:
+  type: com.zaxxer.hikari.HikariDataSource
+  url: jdbc:postgresql://localhost:5432/connecteur
+  username: postgres
+  password: postgres
+[...]
+server:
+  port: 8087
 ```
 
-Note: There are still a few other things remaining to do for Leaflet that we won't detail here.
+## Lancer l application
 
-For further instructions on how to develop with JHipster, have a look at [Using JHipster in development][].
+Cliquer droit sur le ficher "package.json" > `Show npm Scripts`
 
-### Using Angular CLI
+### Lancer le back
 
-You can also use [Angular CLI][] to generate some custom client code.
+Démarrer la `Sprint boot application` avec la main class `com.capgemini.SandboxApp`
 
-For example, the following command:
+### Lancer le front
 
-```
-ng generate component my-component
-```
+Lancer le script npm `start`
 
-will generate few files:
+### Vérifier que l'application fonctionne
 
-```
-create src/main/webapp/app/my-component/my-component.component.html
-create src/main/webapp/app/my-component/my-component.component.ts
-update src/main/webapp/app/app.module.ts
-```
-
-## Building for production
-
-### Packaging as jar
-
-To build the final jar and optimize the sandbox application for production, run:
-
-```
-
-./mvnw -Pprod clean verify
-
-
-```
-
-This will concatenate and minify the client CSS and JavaScript files. It will also modify `index.html` so it references these new files.
-To ensure everything worked, run:
-
-```
-
-java -jar target/*.jar
-
-
-```
-
-Then navigate to [http://localhost:8080](http://localhost:8080) in your browser.
-
-Refer to [Using JHipster in production][] for more details.
-
-### Packaging as war
-
-To package your application as a war in order to deploy it to an application server, run:
-
-```
-
-./mvnw -Pprod,war clean verify
-
-
-```
-
-## Testing
-
-To launch your application's tests, run:
-
-```
-./mvnw verify
-```
-
-### Client tests
-
-Unit tests are run by [Jest][] and written with [Jasmine][]. They're located in [src/test/javascript/](src/test/javascript/) and can be run with:
-
-```
-npm test
-```
-
-For more information, refer to the [Running tests page][].
-
-### Code quality
-
-Sonar is used to analyse code quality. You can start a local Sonar server (accessible on http://localhost:9001) with:
-
-```
-docker-compose -f src/main/docker/sonar.yml up -d
-```
-
-You can run a Sonar analysis with using the [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) or by using the maven plugin.
-
-Then, run a Sonar analysis:
-
-```
-./mvnw -Pprod clean verify sonar:sonar
-```
-
-If you need to re-run the Sonar phase, please be sure to specify at least the `initialize` phase since Sonar properties are loaded from the sonar-project.properties file.
-
-```
-./mvnw initialize sonar:sonar
-```
-
-For more information, refer to the [Code quality page][].
-
-## Using Docker to simplify development (optional)
-
-You can use Docker to improve your JHipster development experience. A number of docker-compose configuration are available in the [src/main/docker](src/main/docker) folder to launch required third party services.
-
-For example, to start a postgresql database in a docker container, run:
-
-```
-docker-compose -f src/main/docker/postgresql.yml up -d
-```
-
-To stop it and remove the container, run:
-
-```
-docker-compose -f src/main/docker/postgresql.yml down
-```
-
-You can also fully dockerize your application and all the services that it depends on.
-To achieve this, first build a docker image of your app by running:
-
-```
-./mvnw -Pprod verify jib:dockerBuild
-```
-
-Then run:
-
-```
-docker-compose -f src/main/docker/app.yml up -d
-```
-
-For more information refer to [Using Docker and Docker-Compose][], this page also contains information on the docker-compose sub-generator (`jhipster docker-compose`), which is able to generate docker configurations for one or several JHipster applications.
-
-## Continuous Integration (optional)
-
-To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
-
-[jhipster homepage and latest documentation]: https://www.jhipster.tech
-[jhipster 6.10.5 archive]: https://www.jhipster.tech/documentation-archive/v6.10.5
-[using jhipster in development]: https://www.jhipster.tech/documentation-archive/v6.10.5/development/
-[using docker and docker-compose]: https://www.jhipster.tech/documentation-archive/v6.10.5/docker-compose
-[using jhipster in production]: https://www.jhipster.tech/documentation-archive/v6.10.5/production/
-[running tests page]: https://www.jhipster.tech/documentation-archive/v6.10.5/running-tests/
-[code quality page]: https://www.jhipster.tech/documentation-archive/v6.10.5/code-quality/
-[setting up continuous integration]: https://www.jhipster.tech/documentation-archive/v6.10.5/setting-up-ci/
-[node.js]: https://nodejs.org/
-[yarn]: https://yarnpkg.org/
-[webpack]: https://webpack.github.io/
-[angular cli]: https://cli.angular.io/
-[browsersync]: https://www.browsersync.io/
-[jest]: https://facebook.github.io/jest/
-[jasmine]: https://jasmine.github.io/2.0/introduction.html
-[protractor]: https://angular.github.io/protractor/
-[leaflet]: https://leafletjs.com/
-[definitelytyped]: https://definitelytyped.org/
+http://localhost:8087/
