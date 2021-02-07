@@ -2,8 +2,8 @@ version: '2'
 services:
   sandbox-postgresql:
     image: postgres:12.3
-    # volumes:
-    #     - ~/volumes/jhipster/sandbox/postgresql/:/var/lib/postgresql/data/
+    volumes:
+      - ~/volumes/jhipster/sandbox/postgresql/:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=sandbox
       - POSTGRES_PASSWORD=
