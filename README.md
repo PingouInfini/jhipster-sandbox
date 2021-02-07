@@ -107,11 +107,11 @@ paginate Personne, Organisation  with pagination
 service all with serviceImpl
 ```
 
-Enregistrer le résultat de la modélisation dans un fichier `jhipster-cin-jdl.jh` à stocker dans le répertoire du projet.
+Enregistrer le résultat de la modélisation dans un fichier `jhipster-jdl.jh` à stocker dans le répertoire du projet.
 Ouvrir un terminal et se positionner dans le répertoire projet, puis lancer la commande
 
 ```
-jhipster import-jdl jhipster-cin-jdl.jh
+jhipster import-jdl jhipster-jdl.jh
 ```
 
 ## Créer une image docker
