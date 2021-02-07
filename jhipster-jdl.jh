@@ -1,0 +1,30 @@
+entity Personne {
+    nom String required,
+    prenom String,
+    dateDeNaissance Instant required,
+    taille Integer
+    couleurYeux Couleur
+}
+
+entity Organisation {
+    appellation String required,
+    description String,
+    dateCreation Instant
+}
+
+enum Couleur {
+    BLEU, VERT, MARRON
+}
+
+relationship ManyToMany {
+    Organisation{personne(nom)} to Personne{organisation}
+}
+
+// Set pagination options
+paginate Personne, Organisation  with pagination
+
+// Use Data Transfer Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
