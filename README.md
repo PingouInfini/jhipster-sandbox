@@ -116,9 +116,59 @@ jhipster import-jdl jhipster-jdl.jh
 
 ## Créer une image docker
 
+### Activer la persistence pour de la BDD (en cas de redémarrage du container
+
+Modifier `postgresql.yml` pour activer le volume
+
+```
+volumes:
+      - ~/volumes/jhipster/sandbox/postgresql/:/var/lib/postgresql/data/
+```
+
+### Adapter la configuration
+
+Modifier les fichiers `.\src\main\resources\config\application-dev.yml` `.\src\main\resources\config\application-prod.yml` et adapter le `port`:
+
+```
+server:
+  port: 8087
+```
+
+### Build image et push dockerhub
+
+mvnw -DskipTests -Pprod verify jib:dockerBuild
+docker login --username=pingouinfinihub
+docker tag sandbox pingouinfinihub/sandbox:latest
+docker push pingouinfinihub/sandbox:latest
+
+### Lancer l'application avec Docker
+
+```
+docker-compose -f src/main/docker/app.yml up -d
+```
+
+### (Si besoin) Packaging as war
+
+To package your application as a war in order to deploy it to an application server, run:
+
+```
+./mvnw -Pprod,war clean verify
+```
+
+## Commandes docker utiles
+
+| Description           |                    Commande                     |
+| --------------------- | :---------------------------------------------: |
+| lister les images     |                  docker images                  |
+| lister les containers |              docker container list              |
+| accès au container    |       docker exec -it <id_container> bash       |
+| démarrer un container | docker-compose -f src/main/docker/app.yml up -d |
+| stopper un container  | docker-compose -f src/main/docker/app.yml down  |
+
 # Tests en local
 
 Tests de l'application en local, via IDE Intellij.
+Nécessite l'installation des prérequis
 
 ## Préparation de la base de données
 
@@ -126,33 +176,33 @@ Tests de l'application en local, via IDE Intellij.
    ```sql
    psql -U postgres
    ```
-1. Création d'une base de données
+1. Création d'un user et d'une base de données
    ```sql
-   postgres=# create database connecteur;
-   CREATE DATABASE
+   CREATE ROLE sandbox WITH LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION PASSWORD 'sandbox'
+   CREATE DATABASE sandbox WITH OWNER = sandbox ENCODING = 'UTF8' TABLESPACE = pg_default CONNECTION LIMIT = -1;
    ```
 1. Autres commandes utiles
    1. Vider les données d'une table
       ```sql
-      postgres=# TRUNCATE TABLE `table`
+      TRUNCATE TABLE `table`
       ```
    1. Suppression/création d'une base de données
       ```
-      postgres=# SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = ‘connecteur’;
-      postgres=# drop database connecteur;
-      postgres=# create database connecteur;
+      postgres=# SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = ‘sandbox’;
+      postgres=# drop database sandbox;
+      postgres=# create database sandbox;
       ```
 
 ## Adapter la configuration
 
-Mofidier le fichier `.\src\main\resources\config\application-dev.yml` et modifier `datasource` et `port` afin d'obtenir:
+Ouvrir le fichier `.\src\main\resources\config\application-dev.yml` et modifier `datasource` et `port` afin d'obtenir:
 
 ```
 datasource:
   type: com.zaxxer.hikari.HikariDataSource
-  url: jdbc:postgresql://localhost:5432/connecteur
-  username: postgres
-  password: postgres
+  url: jdbc:postgresql://localhost:5432/sandbox
+  username: sandbox
+  password: sandbox
 [...]
 server:
   port: 8087
