@@ -85,14 +85,38 @@ entity Personne {
     couleurYeux Couleur
 }
 
+enum Couleur {
+    BLEU, VERT, MARRON
+}
+
 entity Organisation {
     appellation String required,
     description String,
     dateCreation Instant
 }
 
-enum Couleur {
-    BLEU, VERT, MARRON
+entity Fieldtypes {
+    typestring String,
+    typeinteger Integer,
+    typelong Long,
+    typebigdecimal BigDecimal,
+    typefloat Float,
+    typedouble Double,
+    typeenum EnumExemple,
+    typeboolean Boolean,
+    typelocaldate LocalDate,
+    typezoneddatetime ZonedDateTime,
+    typeinstant Instant,
+    typeduration Duration,
+    typeuuid UUID,
+    typeblob Blob,
+    typeanyblob AnyBlob,
+    typeimageblob ImageBlob,
+    typetextblob TextBlob
+}
+
+enum EnumExemple {
+    ENUM1, ENUM2, ENUM3
 }
 
 relationship ManyToMany {
@@ -129,17 +153,29 @@ volumes:
 
 ### Adapter la configuration
 
-Modifier les fichiers `.\src\main\resources\config\application-dev.yml` `.\src\main\resources\config\application-prod.yml` et adapter le `port`:
+Modifier les fichiers `./src/main/resources/config/application-dev.yml` `./src/main/resources/config/application-prod.yml` et adapter le `port`:
 
 ```
 server:
   port: 8087
 ```
 
-### Build image et push dockerhub
+Puis modifier le fichier `./src/main/docker/app.yml` pour également adapter le port afin de router le port 8087 du container vers le port 8082
 
 ```
-mvnw -DskipTests -Pprod verify jib:dockerBuild
+ports:
+      - 8082:8087
+```
+
+### Compiler une image ...
+
+```
+./mvnw -DskipTests -Pprod verify jib:dockerBuild
+```
+
+### ... et la push dockerhub
+
+```
 docker login --username=pingouinfinihub
 docker tag sandbox pingouinfinihub/sandbox:latest
 docker push pingouinfinihub/sandbox:latest
@@ -153,7 +189,7 @@ docker-compose -f src/main/docker/app.yml up -d
 
 ### Vérifier que l'application fonctionne
 
-[http://localhost:8087/](http://localhost:8087/)
+[http://localhost:8082/](http://localhost:8082/)
 
 ### (Si besoin) Packaging as war
 
@@ -226,7 +262,7 @@ server:
 
 ## Lancer l application
 
-Cliquer droit sur le ficher "package.json" > `Show npm Scripts`
+Cliquer droit sur le fichier "package.json" > `Show npm Scripts`
 
 ### Lancer le back
 
