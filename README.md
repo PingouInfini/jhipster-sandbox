@@ -204,10 +204,10 @@ To package your application as a war in order to deploy it to an application ser
 | Description                        |                    Commande                     |
 | ---------------------------------- | :---------------------------------------------: |
 | lister les images                  |                  docker images                  |
-| supprimer une image                |                  docker rmi <image>             |
+| supprimer une image                |                  docker rmi \image\             |
 | lister les containers              |              docker container ps -a             |
 | destruire les containers stoppés   |              docker container prune -f          |
-| stop & remove un container by name |docker rm $(docker stop $(docker ps -a -q --filter="name=<containerName>"))|
+| stop & remove un container by name |docker rm $(docker stop $(docker ps -a -q --filter="name=\containerName\"))|
 | accès au container                 |       docker exec -it <id_container> bash       |
 | démarrer via un yml                | docker-compose -f src/main/docker/app.yml up -d |
 | stopper via un yml                 | docker-compose -f src/main/docker/app.yml down  |
