@@ -201,13 +201,16 @@ To package your application as a war in order to deploy it to an application ser
 
 ## Commandes docker utiles
 
-| Description           |                    Commande                     |
-| --------------------- | :---------------------------------------------: |
-| lister les images     |                  docker images                  |
-| lister les containers |              docker container list              |
-| accès au container    |       docker exec -it <id_container> bash       |
-| démarrer un container | docker-compose -f src/main/docker/app.yml up -d |
-| stopper un container  | docker-compose -f src/main/docker/app.yml down  |
+| Description                        |                    Commande                     |
+| ---------------------------------- | :---------------------------------------------: |
+| lister les images                  |                  docker images                  |
+| supprimer une image                |                  docker rmi <image>             |
+| lister les containers              |              docker container ps -a             |
+| destruire les containers stoppés   |              docker container prune -f          |
+| stop & remove un container by name |docker rm $(docker stop $(docker ps -a -q --filter="name=<containerName>"))|
+| accès au container                 |       docker exec -it <id_container> bash       |
+| démarrer via un yml                | docker-compose -f src/main/docker/app.yml up -d |
+| stopper via un yml                 | docker-compose -f src/main/docker/app.yml down  |
 
 # Tests en local
 
