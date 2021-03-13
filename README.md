@@ -72,7 +72,7 @@ Via une invite de commande, lancer la commande `jhipster`
 
 ## Modélisation conceptuelle de données
 
-Via le site `https://start.jhipster.tech/jdl-studio/` générer le modèle de données.
+Via le site [https://start.jhipster.tech/jdl-studio/](https://start.jhipster.tech/jdl-studio/), générer le modèle de données.
 
 _exemple:_
 
@@ -230,8 +230,8 @@ et la réalisation des actions suivantes:
    ```
 1. Création d'un user et d'une base de données
    ```sql
-   CREATE ROLE sandbox WITH LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION PASSWORD 'sandbox';
-   CREATE DATABASE sandbox WITH OWNER = sandbox ENCODING = 'UTF8' TABLESPACE = pg_default CONNECTION LIMIT = -1;
+   CREATE ROLE ‘sandbox‘ WITH LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION PASSWORD 'sandbox';
+   CREATE DATABASE ‘sandbox‘ WITH OWNER = sandbox ENCODING = 'UTF8' TABLESPACE = pg_default CONNECTION LIMIT = -1;
    ```
 1. Autres commandes utiles
    1. Vider les données d'une table
@@ -241,8 +241,8 @@ et la réalisation des actions suivantes:
    1. Suppression/création d'une base de données
       ```sql
       SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = ‘sandbox’;
-      DROP database sandbox;
-      CREATE database sandbox;
+      DROP database ‘sandbox‘;
+      CREATE database ‘sandbox‘;
       ```
 
 ## Adapter la configuration
