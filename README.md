@@ -201,16 +201,16 @@ To package your application as a war in order to deploy it to an application ser
 
 ## Commandes docker utiles
 
-| Description                        |                    Commande                     |
-| ---------------------------------- | :---------------------------------------------: |
-| lister les images                  |                  docker images                  |
-| supprimer une image                |                  docker rmi \image\             |
-| lister les containers              |              docker container ps -a             |
-| destruire les containers stoppés   |              docker container prune -f          |
-| stop & remove un container by name |docker rm $(docker stop $(docker ps -a -q --filter="name=\containerName\"))|
-| accès au container                 |       docker exec -it <id_container> bash       |
-| démarrer via un yml                | docker-compose -f src/main/docker/app.yml up -d |
-| stopper via un yml                 | docker-compose -f src/main/docker/app.yml down  |
+| Description                        |                                   Commande                                    |
+| ---------------------------------- | :---------------------------------------------------------------------------: |
+| lister les images                  |                                 docker images                                 |
+| supprimer une image                |                             docker rmi \<image\>                              |
+| lister les containers              |                            docker container ps -a                             |
+| destruire les containers stoppés   |                           docker container prune -f                           |
+| stop & remove un container by name | docker rm $(docker stop $(docker ps -a -q --filter="name=\<containerName\>")) |
+| accès au container                 |                     docker exec -it \<id_container\> bash                     |
+| démarrer via un yml                |                docker-compose -f src/main/docker/app.yml up -d                |
+| stopper via un yml                 |                docker-compose -f src/main/docker/app.yml down                 |
 
 # Tests en local
 
@@ -233,19 +233,19 @@ et la réalisation des actions suivantes:
    ```
 1. Création d'un user et d'une base de données
    ```sql
-   CREATE ROLE ‘sandbox‘ WITH LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION PASSWORD 'sandbox';
-   CREATE DATABASE ‘sandbox‘ WITH OWNER = sandbox ENCODING = 'UTF8' TABLESPACE = pg_default CONNECTION LIMIT = -1;
+   CREATE ROLE "sandbox" WITH LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION PASSWORD 'sandbox';
+   CREATE DATABASE "sandbox" WITH OWNER = "sandbox" ENCODING = 'UTF8' TABLESPACE = pg_default CONNECTION LIMIT = -1;
    ```
 1. Autres commandes utiles
    1. Vider les données d'une table
       ```sql
-      TRUNCATE TABLE `table`;
+      TRUNCATE TABLE "table";
       ```
    1. Suppression/création d'une base de données
       ```sql
       SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = ‘sandbox’;
-      DROP database ‘sandbox‘;
-      CREATE database ‘sandbox‘;
+      DROP database "sandbox";
+      CREATE database "sandbox";
       ```
 
 ## Adapter la configuration
