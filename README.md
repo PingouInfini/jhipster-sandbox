@@ -48,7 +48,7 @@ Via une invite de commande, lancer la commande `jhipster`
 ? Which *type* of application would you like to create? Monolithic application (recommended for simple projects)
 ? [Beta] Do you want to make it reactive with Spring WebFlux? No
 ? What is the base name of your application? sandbox
-? What is your default Java package name? com.capgemini
+? What is your default Java package name? com.pingouincorp
 ? Do you want to use the JHipster Registry to configure, monitor and scale your application? No
 ? Which *type* of authentication would you like to use? JWT authentication (stateless, with a token)
 ? Which *type* of database would you like to use? SQL (H2, MySQL, MariaDB, PostgreSQL, Oracle, MSSQL)
@@ -269,7 +269,7 @@ Cliquer droit sur le fichier "package.json" > `Show npm Scripts`
 
 ### Lancer le back
 
-Démarrer la `Sprint boot application` avec la main class `com.capgemini.SandboxApp`
+Démarrer la `Sprint boot application` avec la main class `com.pingouincorp.SandboxApp`
 
 ### Lancer le front
 
