@@ -70,6 +70,26 @@ Via une invite de commande, lancer la commande `jhipster`
 ? Would you like to install other generators from the JHipster Marketplace? No
 ```
 
+### install requirements
+
+```
+npm install -g yo
+npm install -g generator-jhipster
+npm install -g generator-jhipster-nav-element
+```
+
+### generate new project
+
+```
+jhipster
+```
+
+### add element in navbar
+
+```
+yo jhipster-nav-element
+```
+
 ## Modélisation conceptuelle de données
 
 Via le site [https://start.jhipster.tech/jdl-studio/](https://start.jhipster.tech/jdl-studio/), générer le modèle de données.
